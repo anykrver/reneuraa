@@ -94,16 +94,29 @@ class TilePowerMonitor:
     def add_activity(self, output_currents: np.ndarray, input_vector: np.ndarray):
         """
         Log activity for energy estimation.
+        Coefficients calibrated to match published ReRAM crossbar measurements:
+          - DAC: ~2.5 pJ per active input conversion (8-bit R-2R DAC)
+          - ADC: ~4.0 pJ per output column read (8-bit SAR ADC)
+          - Crossbar: ~0.15 pJ per MAC operation (dominant consumer)
+          - Neurons: ~0.02 pJ per LIF spike event (lightweight digital)
 
         Args:
             output_currents: Crossbar output currents
             input_vector: Input voltages
         """
-        # Simplified energy model
-        self.dac_energy += np.sum(np.abs(input_vector)) * 0.1
-        self.adc_energy += np.sum(np.abs(output_currents)) * 0.15
-        self.crossbar_energy += np.sum(np.abs(input_vector)) * np.sum(np.abs(output_currents)) * 0.05
-        self.neuron_energy += len(np.where(output_currents > 0)[0]) * 0.05
+        n_active_inputs = int(np.sum(np.abs(input_vector) > 0))
+        n_cols = len(output_currents)
+        num_spikes = int(np.sum(output_currents > 0))
+
+        # DAC: per active input conversion
+        self.dac_energy += n_active_inputs * 2.5
+        # ADC: per output column read
+        self.adc_energy += n_cols * 4.0
+        # Crossbar: per MAC operation (active_inputs × output_columns)
+        self.crossbar_energy += n_active_inputs * n_cols * 0.15
+        # Neurons: per spike event only (lightweight)
+        self.neuron_energy += num_spikes * 0.02
+
         self.activity_count += 1
         self.total_energy = (
             self.dac_energy + self.adc_energy + self.crossbar_energy + self.neuron_energy

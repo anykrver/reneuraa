@@ -8,7 +8,7 @@ import numpy as np
 class LIFNeuron:
     """Leaky Integrate-and-Fire neuron."""
 
-    def __init__(self, threshold: float = 1.0, tau_membrane: float = 20.0):
+    def __init__(self, threshold: float = 0.3, tau_membrane: float = 20.0):
         """
         Args:
             threshold: Spike threshold voltage
@@ -18,7 +18,7 @@ class LIFNeuron:
         self.tau_membrane = tau_membrane
         self.voltage = 0.0
         self.is_refractory = False
-        self.refractory_period = 2.0  # ms
+        self.refractory_period = 1.0  # ms
         self.refractory_timer = 0.0
         self.spike_count = 0
 

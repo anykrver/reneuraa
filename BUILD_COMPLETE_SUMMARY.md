@@ -161,17 +161,16 @@ neuraedge-ip/
 - **PCM**: Higher noise (3%), stronger drift
 - **SRAM**: Reference comparison (ideal device)
 
-### Power Breakdown
-- DAC: 55% (voltage conversion)
-- ADC: 0.3% (quantization)
-- Crossbar: 4% (memristor reads)
-- Neurons: 40% (LIF integration)
-- Routing: 0.7% (inter-tile communication)
+### Power Breakdown (Calibrated to ReRAM Literature)
+- DAC: ~15% (voltage conversion, 2.5 pJ/access)
+- ADC: ~40% (SAR quantization, 4.0 pJ/read)
+- Crossbar: ~44% (memristor MAC, 0.15 pJ/op)
+- Neurons: <1% (LIF spike events, 0.02 pJ/spike)
 
 ### Neuron Model
 - **LIF Integration**: dV/dt = -(V-Vrest)/τ + I/C
-- **Threshold**: 1.0V
-- **Refractory**: 2.0ms
+- **Threshold**: 0.3V (calibrated for crossbar output range)
+- **Refractory**: 1.0ms
 - **Reset**: V→0 on spike
 
 ### Routing

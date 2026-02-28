@@ -6,14 +6,16 @@ NeuraEdge uses a comprehensive energy model covering all major components.
 
 ## Energy Coefficients (per operation)
 
-| Component | Energy (pJ) | Scaling |
-|-----------|-------------|---------|
-| DAC | 0.1 | Linear with inputs |
-| ADC | 0.15 | Linear with outputs |
-| Crossbar | 0.05 | Quadratic (M×N reads) |
-| Neuron | 0.05 | Linear with spikes |
-| Router | 0.02 | Per packet |
-| Memory | 0.08 | Per R/W |
+Coefficients are calibrated against published ReRAM crossbar measurements.
+
+| Component | Energy (pJ) | Scaling | Reference |
+|-----------|-------------|---------|-----------|
+| DAC | 2.5 | Per active input conversion | 8-bit R-2R DAC |
+| ADC | 4.0 | Per output column read | 8-bit SAR ADC |
+| Crossbar | 0.15 | Per MAC (input × output) | ReRAM crossbar read |
+| Neuron | 0.02 | Per LIF spike event | Digital LIF update |
+| Router | 0.02 | Per packet | Mesh hop |
+| Memory | 0.08 | Per R/W | SRAM access |
 
 ## Energy Formula
 
@@ -21,10 +23,10 @@ NeuraEdge uses a comprehensive energy model covering all major components.
 E_total(pJ) = E_dac + E_adc + E_xbar + E_neuron + E_router + E_mem
 
 where:
-  E_dac    = 0.1 × num_dac_accesses
-  E_adc    = 0.15 × num_adc_reads
-  E_xbar   = 0.05 × crossbar_size² × num_reads
-  E_neuron = 0.05 × num_spikes
+  E_dac    = 2.5 × num_active_inputs × num_timesteps
+  E_adc    = 4.0 × num_output_columns × num_timesteps
+  E_xbar   = 0.15 × num_active_inputs × num_output_columns × num_timesteps
+  E_neuron = 0.02 × num_spikes
   E_router = 0.02 × num_spike_packets
   E_mem    = 0.08 × (num_reads + num_writes)
 ```

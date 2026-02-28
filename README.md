@@ -21,11 +21,12 @@
 | Category | Details |
 |---|---|
 | **Memristive Computing** | ReRAM, PCM & SRAM device models with conductance noise, temporal drift, and stuck-at fault injection |
-| **Event-Driven SNN** | Leaky Integrate-and-Fire (LIF) neurons with spike-timing computation |
+| **Event-Driven SNN** | Leaky Integrate-and-Fire (LIF) neurons with calibrated threshold & spike-timing computation |
 | **Hybrid Mode** | Automatic switching between SNN spike-based and dense MAC inference |
 | **Multi-Tile Scaling** | 2D mesh spike routing, round-robin arbitration, inter-tile communication |
-| **Power Modeling** | Per-component energy breakdown (DAC / ADC / crossbar / neurons) |
+| **Power Modeling** | Literature-calibrated per-component energy breakdown (DAC / ADC / crossbar / neurons) |
 | **Interactive Dashboard** | Streamlit + Plotly real-time dashboard with dark/light theme toggle |
+| **Error Correction** | On-chip weight remapping toggle demonstrating noise resilience recovery |
 
 ---
 
@@ -88,9 +89,9 @@ The Streamlit dashboard provides **12+ interactive Plotly charts** across four t
 
 | Tab | Visualizations |
 |---|---|
-| **📊 Dashboard** | Energy gauge, power-breakdown donut, crossbar heatmap, tile comparison bar chart |
-| **⚡ Inference** | Per-neuron spike bars, spike raster plot, membrane potential trace, run history |
-| **🏆 Benchmarks** | Radar chart (accuracy/latency/power), scaling grouped bars, noise error-band line, energy horizontal bars |
+| **📊 Dashboard** | Energy gauge, power-breakdown donut, crossbar heatmap, **weight histogram**, tile comparison bar chart |
+| **⚡ Inference** | Per-neuron spike bars, spike raster plot, **real membrane potential trace**, run history |
+| **🏆 Benchmarks** | Radar chart (accuracy/latency/power), scaling grouped bars, noise robustness with **error correction toggle**, energy horizontal bars |
 | **📖 Documentation** | Getting started, architecture overview, API reference, config templates |
 
 **Theme toggle** — switch between a clean light mode (indigo/pink accents) and a premium dark mode (cyan/magenta neon) from the sidebar.

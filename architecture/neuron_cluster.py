@@ -11,7 +11,7 @@ from typing import List, Tuple
 class NeuronCluster:
     """Cluster of LIF neurons (one per output line of crossbar)."""
 
-    def __init__(self, size: int, threshold: float = 1.0):
+    def __init__(self, size: int, threshold: float = 0.3):
         """
         Args:
             size: Number of neurons

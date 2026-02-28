@@ -22,6 +22,7 @@ class ExecutionEngine:
         self.scheduler = TileScheduler(num_tiles)
         self.current_cycle = 0
         self.global_spikes = {}
+        self.total_ops = 0  # cumulative synaptic MAC operations
         self.execution_mode = "snn"  # snn or dense
 
     def set_mode(self, mode: str):
@@ -80,6 +81,12 @@ class ExecutionEngine:
         stats["energy_consumed"] = tile.power_monitor.get_total_energy()
         stats["spike_rate"] = stats["total_spikes"] / (timesteps * tile.size)
 
+        # Track synaptic MAC operations: each timestep processes active_inputs × crossbar_columns
+        active_inputs = int(np.sum(np.abs(inputs if inputs.ndim == 1 else inputs[0]) > 0))
+        ops_this_run = timesteps * active_inputs * tile.size
+        self.total_ops += ops_this_run
+        stats["total_ops"] = ops_this_run
+
         return {
             "outputs": outputs,
             "statistics": stats,
@@ -124,14 +131,17 @@ class ExecutionEngine:
         }
 
     def _estimate_efficiency(self) -> float:
-        """Estimate computational efficiency."""
-        power = self.tile_manager.get_power_summary()["total_energy"]
-        if power == 0:
+        """Estimate computational efficiency in ops/mJ."""
+        energy_pj = self.tile_manager.get_power_summary()["total_energy"]
+        if energy_pj == 0 or self.total_ops == 0:
             return 0.0
-        return 1.0 / power
+        # energy_pj is in pJ; convert to mJ: 1 mJ = 1e9 pJ
+        energy_mj = energy_pj / 1e9
+        return self.total_ops / energy_mj if energy_mj > 0 else 0.0
 
     def reset(self):
         """Reset execution state."""
         self.tile_manager.reset_all()
         self.current_cycle = 0
+        self.total_ops = 0
         self.global_spikes = {}

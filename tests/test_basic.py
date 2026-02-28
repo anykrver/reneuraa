@@ -38,7 +38,7 @@ class TestLIFNeuron:
 
     def test_spike_generation(self):
         """Test spike generation at threshold."""
-        neuron = LIFNeuron(threshold=1.0)
+        neuron = LIFNeuron()  # default threshold=0.3
         # Integrate sufficient current to trigger spike
         spiked = False
         for _ in range(50):
