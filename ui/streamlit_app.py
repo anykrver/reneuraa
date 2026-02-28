@@ -1,5 +1,12 @@
 """Streamlit web UI for NeuraEdge Platform."""
 
+import sys
+import os
+from pathlib import Path
+
+# Add parent directory to path for imports
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
 import streamlit as st
 import numpy as np
 from api.neuraedge_api import NeuraEdge
