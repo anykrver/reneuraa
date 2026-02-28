@@ -1,0 +1,26 @@
+# Low-power configuration
+# Optimized for minimal energy consumption
+
+num_tiles: 2
+tile_size: 32
+
+device_type: sram
+noise_level: 0.01
+drift_enabled: false
+
+mode: snn
+timesteps: 50
+
+global_sram_kb: 128
+tile_buffer_kb: 8
+quantization_bits: 4
+
+# Reduced frequency for lower power
+voltage_nominal: 0.6
+frequency_mhz: 50
+
+mesh_rows: 1
+mesh_cols: 2
+
+log_level: warning
+enable_profiling: false

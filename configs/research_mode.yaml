@@ -1,0 +1,31 @@
+# Research mode configuration
+# For experimental and custom configurations
+
+num_tiles: 4
+tile_size: 64
+
+device_type: pcm
+noise_level: 0.03
+drift_enabled: true
+
+mode: snn
+timesteps: 150
+
+global_sram_kb: 256
+tile_buffer_kb: 16
+quantization_bits: 8
+
+voltage_nominal: 0.8
+frequency_mhz: 100
+
+mesh_rows: 2
+mesh_cols: 2
+
+log_level: debug
+enable_profiling: true
+
+# Research-specific features
+enable_stuck_at_faults: false
+fault_rate: 0.001
+enable_temporal_dynamics: true
+temperature_celsius: 25.0

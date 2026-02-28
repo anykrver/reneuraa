@@ -1,0 +1,34 @@
+# Default NeuraEdge Configuration
+# High-performance, balanced mode
+
+# Hardware configuration
+num_tiles: 4
+tile_size: 64
+
+# Device configuration
+device_type: reram          # reram, pcm, or sram
+max_conductance: 1e-4
+min_conductance: 1e-6
+noise_level: 0.02
+drift_enabled: true
+
+# Execution mode
+mode: snn                   # snn, dense, or hybrid
+timesteps: 100
+
+# Memory configuration
+global_sram_kb: 256
+tile_buffer_kb: 16
+quantization_bits: 8
+
+# Power management
+voltage_nominal: 0.8
+frequency_mhz: 100
+
+# Routing
+mesh_rows: 2
+mesh_cols: 2
+
+# Logging
+log_level: info
+enable_profiling: false
